@@ -2,6 +2,7 @@ import type { GetStaticProps, InferGetStaticPropsType } from "next";
 import Head from "next/head";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
+import { BackToTop } from "@/components/ui/BackToTop";
 import { NavPills } from "@/components/layout/NavPills";
 import { Sidebar } from "@/components/layout/Sidebar";
 import { Approach } from "@/components/sections/Approach";
@@ -60,6 +61,7 @@ export default function Home({ github }: InferGetStaticPropsType<typeof getStati
         <Contact />
       </main>
       <Footer />
+      <BackToTop />
     </>
   );
 }

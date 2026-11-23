@@ -125,8 +125,9 @@ html.dark {
     }
   }
 
+  /* Leave room for the sticky section bar when jumping to a section. */
   [id] {
-    scroll-margin-top: 1.5rem;
+    scroll-margin-top: 5.5rem;
   }
 
   html,

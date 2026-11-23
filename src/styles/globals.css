@@ -1,0 +1,806 @@
+@import "tailwindcss";
+
+/* `dark:` utilities follow the lamp (html.dark), not the OS setting. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/*
+ * Theme tokens. Light ("lights on") is the default; html.dark is "lights off".
+ * Brand = black + yellow. Yellow is a fill on white; use --gold for yellow-looking text on white.
+ */
+:root {
+  --bg: #ffffff;
+  --surface: #ffffff;
+  --surface-2: #f6f6f2;
+  --line: #e6e4da;
+  --ink: #0b0b0c;
+  --muted: #4a4a47;
+  --faint: #696862;
+  --yellow: #ffd60a;
+  --gold: #7a5c00;
+  --live: #7a5c00;
+  --build: #b4410e;
+  --card: #fff8d6;
+  --card-line: #f0df94;
+  --card-shadow: 0 18px 40px -20px rgba(122, 92, 0, 0.45);
+  --chip-soft: rgba(11, 11, 12, 0.06);
+  --soc-bg: #fff3b8;
+  --soc-line: #f2d96b;
+  --soc-text: #0b0b0c;
+  --heat-0: #ebedf0;
+  --heat-1: #9be9a8;
+  --heat-2: #40c463;
+  --heat-3: #30a14e;
+  --heat-4: #216e39;
+  --dot: rgba(11, 11, 12, 0.07);
+  --btn-bg: #0b0b0c;
+  --btn-text: #ffffff;
+  --btn-circle: #ffd60a;
+  --btn-arrow: #0b0b0c;
+  --prod-color: #0b0b0c;
+  --prod-bg: linear-gradient(transparent 58%, #ffd60a 58%, #ffd60a 92%, transparent 92%);
+  color-scheme: light;
+}
+
+html.dark {
+  --bg: #0b0b0c;
+  --surface: #141414;
+  --surface-2: #1b1b1a;
+  --line: #2a2a28;
+  --ink: #f2f2ee;
+  --muted: #b4b3ac;
+  --faint: #8c8b85;
+  --gold: #ffd60a;
+  --live: #ffd60a;
+  --build: #fb923c;
+  --card: #1c1a0e;
+  --card-line: #3b3518;
+  --card-shadow: 0 18px 40px -22px rgba(255, 214, 10, 0.35);
+  --chip-soft: rgba(242, 242, 238, 0.07);
+  --soc-bg: #2a250c;
+  --soc-line: #5a4c12;
+  --soc-text: #ffe680;
+  --heat-0: #1f1f1d;
+  --heat-1: #0e4429;
+  --heat-2: #006d32;
+  --heat-3: #26a641;
+  --heat-4: #39d353;
+  --dot: rgba(242, 242, 238, 0.07);
+  --btn-bg: #ffd60a;
+  --btn-text: #0b0b0c;
+  --btn-circle: #0b0b0c;
+  --btn-arrow: #ffd60a;
+  --prod-color: #ffd60a;
+  --prod-bg: none;
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-line: var(--line);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-faint: var(--faint);
+  --color-yellow: var(--yellow);
+  --color-gold: var(--gold);
+  --color-live: var(--live);
+  --color-build: var(--build);
+  --color-card: var(--card);
+  --color-card-line: var(--card-line);
+  --color-chip: var(--chip-soft);
+  --color-soc: var(--soc-bg);
+  --color-soc-line: var(--soc-line);
+  --color-soc-text: var(--soc-text);
+  --color-btn: var(--btn-bg);
+  --color-btn-text: var(--btn-text);
+  --color-btn-circle: var(--btn-circle);
+  --color-btn-arrow: var(--btn-arrow);
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
+  --font-script: var(--font-caveat), "Segoe Print", cursive;
+}
+
+/* Terminal palette: always dark, with syntax colours. */
+@theme {
+  --color-term: #0e0e10;
+  --color-term-line: #2a2a28;
+  --color-term-text: #f2f2ee;
+  --color-term-muted: #b4b3ac;
+  --color-term-faint: #8c8b85;
+  --color-syn-violet: #b49bff;
+  --color-syn-blue: #6cb6ff;
+  --color-syn-amber: #f0b347;
+  --color-syn-coral: #ff7a93;
+  --color-syn-teal: #55d6be;
+  --color-signal: #2ea043;
+}
+
+@layer base {
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+
+  [id] {
+    scroll-margin-top: 1.5rem;
+  }
+
+  html,
+  body {
+    overflow-x: clip;
+  }
+
+  body {
+    @apply bg-bg font-sans text-ink antialiased;
+    background-image: radial-gradient(var(--dot) 1px, transparent 1.2px);
+    background-size: 24px 24px;
+    transition:
+      background-color 0.4s ease,
+      color 0.4s ease;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-display text-balance;
+  }
+
+  ::selection {
+    background: var(--yellow);
+    color: #0b0b0c;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 2px;
+  }
+}
+
+/* ---------------------------------------------------------------- Animations */
+
+.cursor-blink {
+  animation: blink 1.1s steps(1) infinite;
+}
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+.marquee {
+  animation: marquee 38s linear infinite;
+}
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.sync-dot {
+  animation: syncPulse 2s ease-in-out infinite;
+}
+@keyframes syncPulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(46, 160, 67, 0.55);
+  }
+  50% {
+    box-shadow: 0 0 0 6px rgba(46, 160, 67, 0);
+  }
+}
+
+/* Project and cert cards: a small bounce on hover or keyboard focus. */
+.bounce {
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+.bounce:hover,
+.bounce:focus-within {
+  animation: cardBounce 0.6s cubic-bezier(0.28, 0.84, 0.42, 1) forwards;
+  box-shadow: var(--card-shadow);
+}
+.pill-bounce:hover,
+.pill-bounce:focus-visible {
+  animation: pillBounce 0.5s cubic-bezier(0.28, 0.84, 0.42, 1);
+}
+@keyframes pillBounce {
+  0% {
+    transform: translateY(0);
+  }
+  35% {
+    transform: translateY(-5px);
+  }
+  60% {
+    transform: translateY(0);
+  }
+  80% {
+    transform: translateY(-2px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+@keyframes cardBounce {
+  0% {
+    transform: translateY(0);
+  }
+  30% {
+    transform: translateY(-10px);
+  }
+  50% {
+    transform: translateY(-2px);
+  }
+  70% {
+    transform: translateY(-7px);
+  }
+  85% {
+    transform: translateY(-4px);
+  }
+  100% {
+    transform: translateY(-5px);
+  }
+}
+
+.row-arrow {
+  transition: transform 0.2s ease;
+}
+.row-link:hover .row-arrow {
+  transform: translate(3px, -3px);
+}
+
+/* Glitch on "production." */
+.glitch-word {
+  display: inline-block;
+  animation: glitchWord 3.8s steps(1) infinite;
+}
+@keyframes glitchWord {
+  0%,
+  88%,
+  100% {
+    transform: none;
+    text-shadow: none;
+  }
+  89% {
+    transform: translate(-3px, 1px);
+    text-shadow:
+      -3px 0 #ff3b6b,
+      3px 0 #00c2ff;
+  }
+  90% {
+    transform: translate(3px, -1px);
+    text-shadow:
+      3px 0 #ff3b6b,
+      -3px 0 #00c2ff;
+  }
+  91% {
+    transform: translate(-1px, 0);
+    text-shadow: -1px 0 #00c2ff;
+  }
+  92% {
+    transform: none;
+    text-shadow: none;
+  }
+}
+
+/* Social pills: shine sweep + icon wiggle. */
+.soc {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  transition:
+    transform 0.25s cubic-bezier(0.3, 1.5, 0.5, 1),
+    box-shadow 0.25s ease;
+}
+.soc::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(105deg, transparent 30%, rgba(255, 255, 255, 0.75) 48%, transparent 66%);
+  transform: translateX(-120%);
+  animation: socShine 4.5s ease-in-out infinite;
+  animation-delay: var(--d, 0s);
+}
+.soc:hover,
+.soc:focus-visible {
+  transform: translateY(-3px);
+  box-shadow:
+    0 10px 22px -10px rgba(224, 168, 0, 0.75),
+    0 0 0 3px rgba(255, 214, 10, 0.35);
+}
+.soc:hover .soc-ico,
+.soc:focus-visible .soc-ico {
+  animation: socWiggle 0.55s ease;
+}
+@keyframes socShine {
+  0%,
+  62% {
+    transform: translateX(-120%);
+  }
+  82%,
+  100% {
+    transform: translateX(120%);
+  }
+}
+@keyframes socWiggle {
+  25% {
+    transform: rotate(-14deg) scale(1.15);
+  }
+  50% {
+    transform: rotate(10deg) scale(1.15);
+  }
+  75% {
+    transform: rotate(-5deg) scale(1.05);
+  }
+}
+
+/* ---- Lamp ---- */
+.lamp-svg {
+  transition: filter 0.4s ease;
+}
+.swing-idle,
+.swing-a,
+.swing-b {
+  transform-origin: 50% 0;
+}
+.swing-idle {
+  animation: lampSway 3.4s ease-in-out infinite;
+}
+.swing-idle:hover {
+  animation-duration: 1.8s;
+}
+.swing-a {
+  animation:
+    lampKickA 1.6s cubic-bezier(0.3, 0.6, 0.4, 1),
+    lampSway 3.4s ease-in-out 1.6s infinite;
+}
+.swing-b {
+  animation:
+    lampKickB 1.6s cubic-bezier(0.3, 0.6, 0.4, 1),
+    lampSway 3.4s ease-in-out 1.6s infinite;
+}
+@keyframes lampSway {
+  0%,
+  100% {
+    transform: rotate(-3deg);
+  }
+  50% {
+    transform: rotate(3deg);
+  }
+}
+@keyframes lampKickA {
+  0% {
+    transform: rotate(0);
+  }
+  15% {
+    transform: rotate(16deg);
+  }
+  35% {
+    transform: rotate(-11deg);
+  }
+  55% {
+    transform: rotate(7deg);
+  }
+  75% {
+    transform: rotate(-4deg);
+  }
+  100% {
+    transform: rotate(-3deg);
+  }
+}
+@keyframes lampKickB {
+  0% {
+    transform: rotate(0);
+  }
+  15% {
+    transform: rotate(16deg);
+  }
+  35% {
+    transform: rotate(-11deg);
+  }
+  55% {
+    transform: rotate(7deg);
+  }
+  75% {
+    transform: rotate(-4deg);
+  }
+  100% {
+    transform: rotate(-3deg);
+  }
+}
+.lamp-drop {
+  display: block;
+  animation: lampDrop 1.2s cubic-bezier(0.3, 0.7, 0.4, 1) 0.2s both;
+}
+@keyframes lampDrop {
+  0% {
+    transform: translateY(-210px);
+  }
+  55% {
+    transform: translateY(8px);
+  }
+  72% {
+    transform: translateY(-3px);
+  }
+  86% {
+    transform: translateY(1.5px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+.flick-load {
+  animation: bulbHaunt 1.5s linear 1.4s both;
+}
+@keyframes bulbHaunt {
+  0% {
+    opacity: 0;
+  }
+  6% {
+    opacity: 0.6;
+  }
+  10% {
+    opacity: 0.05;
+  }
+  16% {
+    opacity: 0.85;
+  }
+  22% {
+    opacity: 0.12;
+  }
+  30% {
+    opacity: 0.7;
+  }
+  34% {
+    opacity: 0.2;
+  }
+  46%,
+  100% {
+    opacity: 1;
+  }
+}
+.flick-a {
+  animation: bulbFlickA 0.75s linear both;
+}
+.flick-b {
+  animation: bulbFlickB 0.75s linear both;
+}
+@keyframes bulbFlickA {
+  0% {
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.9;
+  }
+  25% {
+    opacity: 0.15;
+  }
+  40% {
+    opacity: 1;
+  }
+  55% {
+    opacity: 0.35;
+  }
+  70%,
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes bulbFlickB {
+  0% {
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.9;
+  }
+  25% {
+    opacity: 0.15;
+  }
+  40% {
+    opacity: 1;
+  }
+  55% {
+    opacity: 0.35;
+  }
+  70%,
+  100% {
+    opacity: 1;
+  }
+}
+.tug-a {
+  animation: tugA 0.55s ease both;
+}
+.tug-b {
+  animation: tugB 0.55s ease both;
+}
+@keyframes tugA {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  35% {
+    transform: translateY(7px);
+  }
+  60% {
+    transform: translateY(-1px);
+  }
+}
+@keyframes tugB {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  35% {
+    transform: translateY(7px);
+  }
+  60% {
+    transform: translateY(-1px);
+  }
+}
+
+/* ---- Status panel ---- */
+.hs-write {
+  display: inline-block;
+  animation: hsWrite 1s ease-out 1.15s both;
+}
+@keyframes hsWrite {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 -5% 0 0);
+  }
+}
+.hs-line {
+  stroke-dasharray: 240;
+  stroke-dashoffset: 240;
+  animation: hsDraw 0.9s ease-out 1.9s forwards;
+}
+@keyframes hsDraw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+.hs-dot {
+  animation: hsDot 0.9s ease-in-out infinite;
+}
+@keyframes hsDot {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-4px);
+  }
+}
+.twinkle {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: twinkle 2.6s ease-in-out infinite;
+}
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scale(0.8) rotate(0);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.15) rotate(45deg);
+  }
+}
+.photo-float {
+  animation: photoFloat 5s ease-in-out infinite;
+}
+@keyframes photoFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+.photo-frame::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(110deg, transparent 35%, rgba(255, 255, 255, 0.35) 50%, transparent 65%);
+  transform: translateX(-120%);
+  animation: photoShine 7s ease-in-out infinite 2.5s;
+  pointer-events: none;
+}
+@keyframes photoShine {
+  0%,
+  70% {
+    transform: translateX(-120%);
+  }
+  90%,
+  100% {
+    transform: translateX(120%);
+  }
+}
+.photo-kb {
+  transform-origin: 38% 32%;
+  animation:
+    photoKB 16s ease-in-out infinite alternate,
+    photoIn 1s cubic-bezier(0.2, 0.8, 0.2, 1) 0.2s both;
+}
+@keyframes photoKB {
+  from {
+    transform: scale(1) translate(0, 0);
+  }
+  to {
+    transform: scale(1.14) translate(-1.5%, -1%);
+  }
+}
+@keyframes photoIn {
+  from {
+    opacity: 0;
+    filter: grayscale(1) blur(4px);
+  }
+  to {
+    opacity: 1;
+    filter: none;
+  }
+}
+.live-blink {
+  animation: blink 1.6s steps(1) infinite;
+}
+.ping {
+  animation: ping 2s ease-out infinite;
+}
+@keyframes ping {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 214, 10, 0.9);
+  }
+  70% {
+    box-shadow: 0 0 0 12px rgba(255, 214, 10, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 214, 10, 0);
+  }
+}
+.chat-client,
+.chat-typing,
+.chat-reply {
+  opacity: 0;
+}
+.chat-client {
+  transform-origin: 0 100%;
+  animation: chatClient 8s ease infinite 1s;
+}
+.chat-typing {
+  transform-origin: 100% 100%;
+  animation: chatTyping 8s ease infinite 1s;
+}
+.chat-reply {
+  transform-origin: 100% 100%;
+  animation: chatReply 8s ease infinite 1s;
+}
+@keyframes chatClient {
+  0%,
+  3% {
+    opacity: 0;
+    transform: translateY(8px) scale(0.85);
+  }
+  9%,
+  88% {
+    opacity: 1;
+    transform: none;
+  }
+  95%,
+  100% {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+@keyframes chatTyping {
+  0%,
+  20% {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+  25%,
+  41% {
+    opacity: 1;
+    transform: none;
+  }
+  45%,
+  100% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+}
+@keyframes chatReply {
+  0%,
+  44% {
+    opacity: 0;
+    transform: translateY(8px) scale(0.85);
+  }
+  50%,
+  88% {
+    opacity: 1;
+    transform: none;
+  }
+  95%,
+  100% {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+.pop-in {
+  animation: popIn 0.2s ease both;
+}
+@keyframes popIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Returning visitors skip the one-time intro (bulb drop, handwriting, photo fade),
+   but the bulb still flickers on every visit — just sooner, since it doesn't drop in. */
+html.returning .lamp-drop,
+html.returning .hs-write {
+  animation: none;
+}
+html.returning .flick-load {
+  animation-delay: 0.3s;
+}
+html.returning .hs-line {
+  animation: none;
+  stroke-dashoffset: 0;
+}
+html.returning .photo-kb {
+  animation: photoKB 16s ease-in-out infinite alternate;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .marquee,
+  .glitch-word,
+  .soc::after,
+  .photo-frame::after,
+  .photo-kb,
+  .photo-float,
+  .twinkle,
+  .ping,
+  .sync-dot,
+  .swing-idle,
+  .swing-a,
+  .swing-b,
+  .cursor-blink,
+  .live-blink {
+    animation: none !important;
+  }
+  .hs-line {
+    stroke-dashoffset: 0;
+  }
+  .chat-client,
+  .chat-reply {
+    animation: none !important;
+    opacity: 1;
+  }
+  .chat-typing {
+    display: none;
+  }
+}
